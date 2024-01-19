@@ -1,25 +1,44 @@
-import logo from './logo.svg';
-import './App.css';
+import React, { useState } from 'react';
+import './app.css';
 
-function App() {
+const TodoApp = () => {
+  const [tasks, setTasks] = useState([]);
+  const [newTask, setNewTask] = useState('');
+
+  const handleAddTask = () => {
+    if (newTask.trim() !== '') {
+      setTasks([...tasks, newTask]);
+      setNewTask('');
+    }
+  };
+
+  const handleKeyPress = (e) => {
+    if (e.key === 'Enter') {
+      handleAddTask();
+    }
+  };
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+      <div className="todo-container">
+        <h1>ToDo App</h1>
+        <div className="add-task-container">
+          <input
+              type="text"
+              placeholder="Введите новую задачу"
+              value={newTask}
+              onChange={(e) => setNewTask(e.target.value)}
+              onKeyDown={handleKeyPress}
+          />
+          <button onClick={handleAddTask}>Добавить</button>
+        </div>
+        <ul>
+          {tasks.map((task, index) => (
+              <li key={index}>{task}</li>
+          ))}
+        </ul>
+      </div>
   );
-}
+};
 
-export default App;
+export default TodoApp;
+
